@@ -21,8 +21,8 @@ export function Sidebar() {
 
   useEffect(() => {
     const supabase = createClient();
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      setEmail(user?.email ?? null);
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setEmail(session?.user?.email ?? null);
     });
   }, []);
 
@@ -59,6 +59,7 @@ export function Sidebar() {
               src="/admin-login.png"
               alt="Avatar"
               fill
+              sizes="40px"
               className="object-cover object-[center_25%]"
             />
           </div>
