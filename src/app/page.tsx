@@ -1,12 +1,30 @@
-export default function HomePage() {
+import { prisma } from "@/lib/prisma";
+import Navbar from "@/components/storefront/navbar";
+import Hero from "@/components/storefront/hero";
+import ProductGrid from "@/components/storefront/product-grid";
+import About from "@/components/storefront/about";
+import FAQ from "@/components/storefront/faq";
+import Contact from "@/components/storefront/contact";
+import Footer from "@/components/storefront/footer";
+
+export default async function HomePage() {
+  const products = await prisma.product.findMany({
+    where: { isActive: true },
+    include: { variants: true },
+    orderBy: { displayOrder: "asc" },
+  });
+
   return (
-    <main className="flex-1 flex flex-col items-center justify-center px-4">
-      <h1 className="text-4xl font-bold tracking-tight mb-4">
-        Tattoo Art Prints
-      </h1>
-      <p className="text-lg">
-        Coming soon.
-      </p>
-    </main>
+    <>
+      <Navbar />
+      <main className="flex-1">
+        <Hero />
+        <ProductGrid products={products} />
+        <About />
+        <FAQ />
+        <Contact />
+      </main>
+      <Footer />
+    </>
   );
 }

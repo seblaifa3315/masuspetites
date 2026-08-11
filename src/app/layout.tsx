@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Space_Grotesk } from "next/font/google";
+import { Inter, Metal_Mania } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({
@@ -7,14 +7,15 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-space-grotesk",
+const metalMania = Metal_Mania({
+  variable: "--font-metal-mania",
+  weight: "400",
   subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: "Tattoo Art Prints",
-  description: "Original tattoo art prints by a professional tattoo artist",
+  title: "Masus Petites — Tattoo Art Prints",
+  description: "Original tattoo art prints — designed by hand, made for your walls.",
 };
 
 export default function RootLayout({
@@ -25,7 +26,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${spaceGrotesk.variable} h-full antialiased`}
+      className={`${inter.variable} ${metalMania.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>

@@ -27,9 +27,12 @@ src/
 │   │   ├── (dashboard)/    # Route group: sidebar layout
 │   │   │   ├── layout.tsx  # Sidebar + main content layout
 │   │   │   ├── page.tsx    # Dashboard home
-│   │   │   ├── products/   # Products management
+│   │   │   ├── products/   # Products management (CRUD, list, new, [id]/edit)
+│   │   │   │   ├── actions.ts    # Server actions: create, update, delete, toggleActive
+│   │   │   │   ├── new/          # New product page
+│   │   │   │   └── [id]/edit/    # Edit product page
 │   │   │   ├── orders/     # Orders management
-│   │   │   └── messages/   # Messages management
+│   │   │   └── messages/   # Messages management (contact form inbox)
 │   │   ├── login/          # Admin login (split-screen with image)
 │   │   ├── forgot-password/# Password reset request
 │   │   ├── update-password/# Set new password after reset
@@ -42,16 +45,33 @@ src/
 │   └── admin/              # Admin panel components
 │       ├── sidebar.tsx     # Collapsible sidebar with nav, user info
 │       ├── theme-toggle.tsx# Dark/light mode toggle
-│       └── logout-button.tsx
+│       ├── logout-button.tsx
+│       ├── product-form.tsx   # Shared create/edit product form
+│       └── product-actions.tsx# Row actions (edit, delete, active toggle)
 ├── lib/
-│   ├── prisma.ts           # Prisma client singleton
-│   ├── supabase/           # Supabase clients (browser + server)
+│   ├── prisma.ts           # Prisma client singleton (PrismaPg adapter)
+│   ├── supabase/           # Supabase clients (browser, server, admin)
 │   ├── stripe.ts           # Stripe client
 │   ├── resend.ts           # Resend client
 │   └── store/cart.ts       # Zustand cart store
 ├── types/                  # Shared TypeScript types
 └── generated/              # Prisma generated types
 ```
+
+## Prisma v7
+- Client uses `@prisma/adapter-pg` (no `url` in schema — configured in `prisma.config.ts`)
+- Import from `@/generated/prisma/client` (not `@/generated/prisma`)
+- Run `npx prisma generate` after schema changes
+
+## Supabase Storage
+- Product images stored in the `product-images` public bucket
+- Admin operations use the service role key (`SUPABASE_SERVICE_ROLE_KEY`) via `lib/supabase/admin.ts` to bypass RLS
+- Image upload converts `File` to `Buffer` before uploading (required for server actions)
+
+## Products
+- Each product has a single variant (sizeLabel: "Standard") with a price in cents
+- Product list sorted: active first, then alphabetical by name
+- Slug auto-generated from product name on the server (not exposed in admin UI)
 
 ## Auth Flow
 - Admin login at `/admin/login`
