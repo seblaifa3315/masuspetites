@@ -13,6 +13,7 @@ interface ProductCardProps {
   imageUrl: string | null;
   priceCents: number;
   variantId: string;
+  aspectRatio?: string;
 }
 
 export default function ProductCard({
@@ -22,6 +23,7 @@ export default function ProductCard({
   imageUrl,
   priceCents,
   variantId,
+  aspectRatio = "aspect-[3/4]",
 }: ProductCardProps) {
   const addItem = useCartStore((s) => s.addItem);
   const [added, setAdded] = useState(false);
@@ -67,12 +69,12 @@ export default function ProductCard({
       ref={cardRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className="group flex flex-col will-change-transform transition-transform duration-200 ease-out"
+      className="group will-change-transform transition-transform duration-200 ease-out"
       style={{ transform }}
     >
       <Link
         href={`/product/${slug}`}
-        className="relative aspect-[3/4] overflow-hidden rounded-lg bg-surface block"
+        className={`relative ${aspectRatio} overflow-hidden rounded-lg bg-surface block`}
       >
         {imageUrl ? (
           <Image
@@ -97,10 +99,10 @@ export default function ProductCard({
           }}
         />
 
-        {/* Bottom gradient */}
+        {/* Bottom gradient overlay */}
         <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
 
-        {/* Name + price */}
+        {/* Name + price + cart button */}
         <div className="absolute inset-x-0 bottom-0 p-4 flex items-end justify-between gap-2">
           <div className="min-w-0">
             <h3 className="text-sm font-medium text-white line-clamp-1">{name}</h3>
