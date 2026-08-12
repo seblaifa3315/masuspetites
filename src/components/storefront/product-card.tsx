@@ -23,7 +23,7 @@ export default function ProductCard({
   imageUrl,
   priceCents,
   variantId,
-  aspectRatio = "aspect-[3/4]",
+  aspectRatio = "3/4",
 }: ProductCardProps) {
   const addItem = useCartStore((s) => s.addItem);
   const [added, setAdded] = useState(false);
@@ -74,7 +74,8 @@ export default function ProductCard({
     >
       <Link
         href={`/product/${slug}`}
-        className={`relative ${aspectRatio} overflow-hidden rounded-lg bg-surface block`}
+        className="relative overflow-hidden rounded-lg bg-surface block"
+        style={{ aspectRatio }}
       >
         {imageUrl ? (
           <Image

@@ -1,16 +1,16 @@
-# Tattoo Art Prints — E-commerce
+# Masus Petites — Tattoo Art Prints E-commerce
 
 ## Tech Stack
 - **Framework:** Next.js 16 (App Router, TypeScript, src/ directory)
 - **Styling:** Tailwind CSS v4 (storefront: always-dark; admin: dark/light toggle)
-- **Fonts:** Inter (body), Space Grotesk (headings)
-- **Icons:** Lucide React
+- **Fonts:** Inter (body), Cinzel Decorative (headings)
+- **Icons:** Lucide React + custom SVG icons (Instagram, TikTok, X)
 - **ORM:** Prisma with Supabase PostgreSQL
 - **Auth:** Supabase Auth (2-hour session expiry enforced via cookie)
 - **Storage:** Supabase Storage (product images)
 - **Payments:** Stripe (Checkout Sessions)
 - **Emails:** Resend (order confirmations)
-- **State:** Zustand (cart)
+- **State:** Zustand (cart with localStorage persistence)
 - **UI Components:** shadcn/ui (admin)
 - **Testing:** Vitest (unit), Playwright (e2e)
 
@@ -20,6 +20,7 @@ src/
 ├── app/                    # Next.js App Router pages
 │   ├── layout.tsx          # Root layout (fonts, metadata)
 │   ├── page.tsx            # Storefront homepage
+│   ├── actions.ts          # Contact form server action
 │   ├── product/[slug]/     # Product detail page
 │   ├── cart/               # Cart page
 │   ├── checkout/success/   # Post-checkout confirmation
@@ -40,6 +41,15 @@ src/
 │   └── api/webhooks/       # Stripe webhook handler
 ├── components/
 │   ├── storefront/         # Storefront UI components
+│   │   ├── navbar.tsx      # Sticky navbar with mobile menu + cart badge
+│   │   ├── hero.tsx        # Full-width hero with background image + animations
+│   │   ├── product-card.tsx# Product card with tilt/glare effect + dark overlay
+│   │   ├── product-grid.tsx# Masonry layout product grid
+│   │   ├── about.tsx       # About the artist section
+│   │   ├── faq.tsx         # Accordion FAQ
+│   │   ├── contact.tsx     # Contact form + social links
+│   │   ├── icons.tsx       # Custom SVG icons (Instagram, TikTok, X)
+│   │   └── footer.tsx      # Footer with links + socials
 │   ├── product/            # Product display components
 │   ├── cart/               # Cart components
 │   └── admin/              # Admin panel components
@@ -53,7 +63,7 @@ src/
 │   ├── supabase/           # Supabase clients (browser, server, admin)
 │   ├── stripe.ts           # Stripe client
 │   ├── resend.ts           # Resend client
-│   └── store/cart.ts       # Zustand cart store
+│   └── store/cart.ts       # Zustand cart store (persist middleware, localStorage)
 ├── types/                  # Shared TypeScript types
 └── generated/              # Prisma generated types
 ```
@@ -73,6 +83,17 @@ src/
 - Product list sorted: active first, then alphabetical by name
 - Slug auto-generated from product name on the server (not exposed in admin UI)
 
+## Storefront
+- Homepage sections: Navbar > Hero > Product Grid > About > FAQ > Contact > Footer
+- Product grid uses CSS columns masonry layout (`columns-[220px]`) with varying aspect ratios
+- Product cards feature tilt/glare effect on hover + dark gradient overlay with slide-up cart button
+- Hero title has breathe + flicker animations (defined in `globals.css` `@layer base`)
+- Hero CTA button glows on hover (`.hero-glow-btn` class in `globals.css`)
+- Navbar smooth-scrolls to sections; logo scrolls to top
+- Cart store uses Zustand `persist` middleware; hydration handled with `mounted` state check
+- Contact form uses `useActionState` with server action writing to `ContactMessage` table
+- Custom SVG icons for Instagram, TikTok, X in `components/storefront/icons.tsx`
+
 ## Auth Flow
 - Admin login at `/admin/login`
 - Forgot password → Supabase sends reset email → `/admin/auth/callback` exchanges code → `/admin/update-password`
@@ -85,8 +106,8 @@ src/
 - Border: #262626
 - Foreground: #F0F0F0
 - Muted: #737373
-- Accent: #7C3AED (deep violet)
-- Accent hover: #6D28D9
+- Accent: #EC4899 (hot pink)
+- Accent hover: #DB2777
 
 ## Theme Palette (Light — admin only)
 - Background: #F5F5F5
@@ -94,5 +115,10 @@ src/
 - Border: #E5E5E5
 - Foreground: #171717
 - Muted: #737373
-- Accent: #7C3AED (deep violet)
-- Accent hover: #6D28D9
+- Accent: #EC4899 (hot pink)
+- Accent hover: #DB2777
+
+## CSS Animations
+- Custom keyframes defined in `globals.css` inside `@layer base`: `float`, `breathe`, `drift`, `flicker`
+- Applied via inline `style={{ animation: "..." }}` on elements (Tailwind v4 can purge arbitrary animation classes)
+- Hero CTA glow uses plain CSS class `.hero-glow-btn:hover` to avoid Tailwind purging

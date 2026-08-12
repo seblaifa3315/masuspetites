@@ -12,7 +12,10 @@ export default function Hero() {
       />
       <div className="absolute inset-0 bg-black/75" />
       <div className="relative z-10 text-center px-4 max-w-3xl mx-auto">
-        <h1 className="font-heading text-5xl md:text-6xl font-bold tracking-tight mb-6">
+        <h1
+          className="font-heading text-5xl md:text-7xl font-thin tracking-tight mb-6"
+          style={{ animation: "breathe 5s ease-in-out infinite, flicker 3s step-end infinite" }}
+        >
           Art That Lives
           <br />
           <span className="text-accent">Beyond the Skin</span>
@@ -22,7 +25,7 @@ export default function Hero() {
         </p>
         <a
           href="#collection"
-          className="inline-flex px-8 py-3 bg-accent hover:bg-accent-hover text-white font-medium rounded-lg transition-colors text-lg"
+          className="inline-flex px-8 py-3 bg-accent hover:bg-accent-hover text-white font-medium rounded-lg transition-all duration-300 text-lg hero-glow-btn"
         >
           Shop the Collection
         </a>

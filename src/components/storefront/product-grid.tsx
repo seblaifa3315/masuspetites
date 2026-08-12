@@ -8,7 +8,7 @@ interface Product {
   variants: { id: string; priceCents: number }[];
 }
 
-const aspectRatios = ["aspect-[3/4]", "aspect-[4/5]", "aspect-[2/3]", "aspect-[1/1]", "aspect-[3/5]"] as const;
+const aspectRatios = ["3/4", "4/5", "2/3", "1/1", "3/5"] as const;
 
 export default function ProductGrid({ products }: { products: Product[] }) {
   return (
@@ -21,9 +21,9 @@ export default function ProductGrid({ products }: { products: Product[] }) {
           No products available yet. Check back soon!
         </p>
       ) : (
-        <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-6 [column-fill:balance]">
+        <div className="columns-[220px] gap-12 [column-fill:balance]">
           {products.map((product, i) => (
-            <div key={product.id} className="mb-6 break-inside-avoid">
+            <div key={product.id} className="mb-12 break-inside-avoid">
               <ProductCard
                 id={product.id}
                 name={product.name}

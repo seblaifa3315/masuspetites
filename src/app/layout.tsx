@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Metal_Mania } from "next/font/google";
+import { Inter, Cinzel_Decorative } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({
@@ -7,9 +7,9 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
-const metalMania = Metal_Mania({
-  variable: "--font-metal-mania",
-  weight: "400",
+const cinzelDecorative = Cinzel_Decorative({
+  variable: "--font-cinzel-decorative",
+  weight: ["400", "700", "900"],
   subsets: ["latin"],
 });
 
@@ -26,7 +26,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${metalMania.variable} h-full antialiased`}
+      className={`${inter.variable} ${cinzelDecorative.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
