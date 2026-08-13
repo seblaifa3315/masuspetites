@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { ChevronDown } from "lucide-react";
 
 const faqs = [
@@ -26,6 +26,58 @@ const faqs = [
   },
 ];
 
+function FAQItem({
+  faq,
+  isOpen,
+  onToggle,
+}: {
+  faq: { question: string; answer: string };
+  isOpen: boolean;
+  onToggle: () => void;
+}) {
+  const contentRef = useRef<HTMLDivElement>(null);
+  const [height, setHeight] = useState(0);
+
+  useEffect(() => {
+    if (contentRef.current) {
+      setHeight(contentRef.current.scrollHeight);
+    }
+  }, [isOpen]);
+
+  return (
+    <div
+      style={{
+        borderLeft: isOpen ? "2px solid var(--accent)" : "2px solid transparent",
+        transition: "border-color 0.2s",
+      }}
+      className="border border-border rounded-lg overflow-hidden"
+    >
+      <button
+        onClick={onToggle}
+        className="w-full flex items-center justify-between px-5 py-4 text-left text-sm font-medium hover:bg-surface/50 transition-colors cursor-pointer"
+      >
+        {faq.question}
+        <ChevronDown
+          className={`w-4 h-4 text-muted shrink-0 ml-2 transition-transform duration-200 ${
+            isOpen ? "rotate-180" : ""
+          }`}
+        />
+      </button>
+      <div
+        style={{
+          height: isOpen ? height : 0,
+          overflow: "hidden",
+          transition: "height 0.25s ease",
+        }}
+      >
+        <div ref={contentRef} className="px-5 pb-4 text-sm text-muted leading-relaxed">
+          {faq.answer}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
@@ -35,29 +87,14 @@ export default function FAQ() {
         Frequently Asked Questions
       </h2>
       <div className="space-y-3">
-        {faqs.map((faq, i) => {
-          const isOpen = openIndex === i;
-          return (
-            <div key={i} className="border border-border rounded-lg overflow-hidden">
-              <button
-                onClick={() => setOpenIndex(isOpen ? null : i)}
-                className="w-full flex items-center justify-between px-5 py-4 text-left text-sm font-medium hover:bg-surface/50 transition-colors"
-              >
-                {faq.question}
-                <ChevronDown
-                  className={`w-4 h-4 text-muted shrink-0 ml-2 transition-transform duration-200 ${
-                    isOpen ? "rotate-180" : ""
-                  }`}
-                />
-              </button>
-              {isOpen && (
-                <div className="px-5 pb-4 text-sm text-muted leading-relaxed">
-                  {faq.answer}
-                </div>
-              )}
-            </div>
-          );
-        })}
+        {faqs.map((faq, i) => (
+          <FAQItem
+            key={i}
+            faq={faq}
+            isOpen={openIndex === i}
+            onToggle={() => setOpenIndex(openIndex === i ? null : i)}
+          />
+        ))}
       </div>
     </section>
   );
