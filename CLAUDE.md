@@ -34,6 +34,7 @@ src/
 │   │   │   │   └── [id]/edit/    # Edit product page
 │   │   │   ├── orders/     # Orders management
 │   │   │   └── messages/   # Messages management (contact form inbox)
+│   │   │       └── actions.ts    # Server actions: read, delete, star, bulk ops, markAllRead
 │   │   ├── login/          # Admin login (split-screen with image)
 │   │   ├── forgot-password/# Password reset request
 │   │   ├── update-password/# Set new password after reset
@@ -57,7 +58,10 @@ src/
 │       ├── theme-toggle.tsx# Dark/light mode toggle
 │       ├── logout-button.tsx
 │       ├── product-form.tsx   # Shared create/edit product form
-│       └── product-actions.tsx# Row actions (edit, delete, active toggle)
+│       ├── product-actions.tsx# Row actions (edit, delete, active toggle)
+│       ├── message-actions.tsx  # MessageRow: expand, read/unread, star, delete, checkbox
+│       ├── messages-table.tsx   # Client wrapper: bulk selection, action bar, empty state
+│       └── mark-all-read-button.tsx # Mark all messages as read button
 ├── lib/
 │   ├── prisma.ts           # Prisma client singleton (PrismaPg adapter)
 │   ├── supabase/           # Supabase clients (browser, server, admin)
@@ -93,6 +97,15 @@ src/
 - Cart store uses Zustand `persist` middleware; hydration handled with `mounted` state check
 - Contact form uses `useActionState` with server action writing to `ContactMessage` table
 - Custom SVG icons for Instagram, TikTok, X in `components/storefront/icons.tsx`
+
+## Messages
+- ContactMessage model has `isRead` and `isStarred` boolean fields
+- Messages page is paginated (20 per page) via `?page=` search param
+- Sort order: starred first → unread → newest (`isStarred desc, isRead asc, createdAt desc`)
+- Server actions: toggleReadStatus, deleteMessage, markAllAsRead, toggleStarred, bulkMarkRead, bulkMarkUnread, bulkToggleStarred, bulkDelete
+- MessagesTable (client component) manages bulk selection state; MessageRow handles individual row interactions
+- Expand/collapse uses CSS grid `gridTemplateRows: 0fr/1fr` transition (always-rendered hidden row)
+- Dates serialized to ISO strings before passing from server page to client components
 
 ## Auth Flow
 - Admin login at `/admin/login`
