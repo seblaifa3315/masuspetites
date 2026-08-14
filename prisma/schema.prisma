@@ -82,6 +82,7 @@ model ContactMessage {
   email     String
   message   String
   isRead    Boolean  @default(false)
+  isStarred Boolean  @default(false)
   createdAt DateTime @default(now())
 
   @@map("contact_messages")
