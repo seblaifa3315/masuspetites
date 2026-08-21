@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { LayoutDashboard, Package, FileText, MessageSquare, Settings, ChevronsLeft } from "lucide-react";
+import { LayoutDashboard, Package, FileText, Users, MessageSquare, Settings, ChevronsLeft } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { LogoutButton } from "./logout-button";
 import { ThemeToggle } from "./theme-toggle";
@@ -12,6 +12,7 @@ const navItems = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/products", label: "Products", icon: Package },
   { href: "/admin/orders", label: "Orders", icon: FileText },
+  { href: "/admin/clients", label: "Clients", icon: Users },
   { href: "/admin/messages", label: "Messages", icon: MessageSquare },
   { href: "/admin/settings", label: "Settings", icon: Settings },
 ];
