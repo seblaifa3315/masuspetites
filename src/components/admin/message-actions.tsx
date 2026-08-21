@@ -86,7 +86,11 @@ export function MessageRow({
   return (
     <>
       <tr
-        className={`transition-colors hover:bg-surface/50 ${
+        onClick={(e) => {
+          if ((e.target as HTMLElement).closest("button, a, input")) return;
+          setExpanded(!expanded);
+        }}
+        className={`cursor-pointer transition-colors hover:bg-surface/50 ${
           !isRead ? "border-l-2 border-l-accent" : ""
         }`}
       >

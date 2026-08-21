@@ -16,7 +16,7 @@ const navItems = [
   { href: "/admin/settings", label: "Settings", icon: Settings },
 ];
 
-export function Sidebar() {
+export function Sidebar({ newOrderCount = 0, unreadMessageCount = 0 }: { newOrderCount?: number; unreadMessageCount?: number }) {
   const [collapsed, setCollapsed] = useState(false);
   const [email, setEmail] = useState<string | null>(null);
 
@@ -72,19 +72,40 @@ export function Sidebar() {
 
       {/* Navigation */}
       <nav className="flex-1 space-y-1 p-2">
-        {navItems.map((item) => (
-          <Link
-            key={item.href}
-            href={item.href}
-            title={collapsed ? item.label : undefined}
-            className={`flex items-center gap-3 rounded-md px-3 py-2 text-sm text-muted transition-colors hover:bg-background hover:text-foreground ${
-              collapsed ? "justify-center" : ""
-            }`}
-          >
-            <item.icon className="h-5 w-5" />
-            {!collapsed && <span>{item.label}</span>}
-          </Link>
-        ))}
+        {navItems.map((item) => {
+          const badgeCount =
+            item.href === "/admin/orders" ? newOrderCount :
+            item.href === "/admin/messages" ? unreadMessageCount : 0;
+          const showBadge = badgeCount > 0;
+
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              title={collapsed ? item.label : undefined}
+              className={`relative flex items-center gap-3 rounded-md px-3 py-2 text-sm text-muted transition-colors hover:bg-background hover:text-foreground ${
+                collapsed ? "justify-center" : ""
+              }`}
+            >
+              <div className="relative">
+                <item.icon className="h-5 w-5" />
+                {showBadge && collapsed && (
+                  <span className="absolute -right-1 -top-1 h-2 w-2 rounded-full bg-accent" />
+                )}
+              </div>
+              {!collapsed && (
+                <span className="flex items-center gap-1.5">
+                  {item.label}
+                  {showBadge && (
+                    <span className="flex h-5 w-5 items-center justify-center rounded-full bg-accent text-xs font-medium text-white">
+                      {badgeCount}
+                    </span>
+                  )}
+                </span>
+              )}
+            </Link>
+          );
+        })}
       </nav>
 
       {/* Footer */}
