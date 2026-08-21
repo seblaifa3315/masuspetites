@@ -13,7 +13,7 @@ const aspectRatios = ["3/4", "4/5", "2/3", "1/1", "3/5"] as const;
 export default function ProductGrid({ products }: { products: Product[] }) {
   return (
     <section id="collection" className="scroll-mt-20 py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-      <h2 className="font-heading text-3xl md:text-4xl font-bold text-center mb-12">
+      <h2 className="font-heading text-3xl md:text-4xl text-center mb-12">
         Our Collection
       </h2>
       {products.length === 0 ? (

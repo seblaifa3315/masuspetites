@@ -34,6 +34,23 @@ export async function GET(request: NextRequest) {
     const { error } = await supabase.auth.exchangeCodeForSession(code);
 
     if (!error) {
+      // If redirecting to login (e.g. after email change), sign out so the
+      // user arrives at the login page logged out.
+      if (next === "/admin/login") {
+        await supabase.auth.signOut();
+        const logoutRedirect = request.nextUrl.clone();
+        logoutRedirect.pathname = "/admin/login";
+        logoutRedirect.searchParams.delete("code");
+        logoutRedirect.searchParams.delete("next");
+        const logoutResponse = NextResponse.redirect(logoutRedirect);
+        // Clear auth cookies
+        for (const cookie of request.cookies.getAll()) {
+          if (cookie.name.startsWith("sb-")) {
+            logoutResponse.cookies.set(cookie.name, "", { maxAge: 0 });
+          }
+        }
+        return logoutResponse;
+      }
       return supabaseResponse;
     }
   }

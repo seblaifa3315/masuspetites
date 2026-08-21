@@ -2,10 +2,10 @@ import Link from "next/link";
 import { InstagramIcon, TikTokIcon, XIcon } from "./icons";
 
 const quickLinks = [
-  { label: "Shop", href: "#collection" },
-  { label: "About", href: "#about" },
-  { label: "FAQ", href: "#faq" },
-  { label: "Contact", href: "#contact" },
+  { label: "Shop", href: "/#collection" },
+  { label: "About", href: "/#about" },
+  { label: "FAQ", href: "/#faq" },
+  { label: "Contact", href: "/#contact" },
 ];
 
 const socials = [
@@ -20,7 +20,7 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto grid sm:grid-cols-3 gap-8">
         {/* Brand */}
         <div>
-          <Link href="/" className="font-heading text-lg font-bold">
+          <Link href="/" className="font-heading text-lg font-semibold">
             Masus Petites
           </Link>
           <p className="mt-2 text-sm text-muted leading-relaxed">

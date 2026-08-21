@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ShoppingBag, Menu, X } from "lucide-react";
 import { useCartStore } from "@/lib/store/cart";
 
@@ -12,19 +13,24 @@ const navLinks = [
   { label: "Contact", href: "#contact" },
 ];
 
-function scrollTo(hash: string) {
-  const el = document.querySelector(hash);
-  if (el) el.scrollIntoView({ behavior: "smooth" });
-}
-
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const router = useRouter();
   const itemCount = useCartStore((s) =>
     s.items.reduce((sum, i) => sum + i.quantity, 0)
   );
 
   useEffect(() => setMounted(true), []);
+
+  function navigateTo(hash: string) {
+    const el = document.querySelector(hash);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    } else {
+      router.push(`/${hash}`);
+    }
+  }
 
   return (
     <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
@@ -32,7 +38,13 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <button
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            onClick={() => {
+              if (window.location.pathname === "/") {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              } else {
+                router.push("/");
+              }
+            }}
             className="font-heading text-xl font-bold tracking-tight cursor-pointer"
           >
             Masus Petites
@@ -43,7 +55,7 @@ export default function Navbar() {
             {navLinks.map((link) => (
               <button
                 key={link.href}
-                onClick={() => scrollTo(link.href)}
+                onClick={() => navigateTo(link.href)}
                 className="text-sm text-muted hover:text-foreground transition-colors cursor-pointer"
               >
                 {link.label}
@@ -62,7 +74,7 @@ export default function Navbar() {
               )}
             </Link>
             <button
-              onClick={() => scrollTo("#collection")}
+              onClick={() => navigateTo("#collection")}
               className="hidden sm:inline-flex px-4 py-2 bg-accent hover:bg-accent-hover text-white text-sm font-medium rounded-lg transition-colors cursor-pointer"
             >
               Shop Now
@@ -87,7 +99,7 @@ export default function Navbar() {
               <button
                 key={link.href}
                 onClick={() => {
-                  scrollTo(link.href);
+                  navigateTo(link.href);
                   setMobileOpen(false);
                 }}
                 className="text-left text-sm text-muted hover:text-foreground transition-colors py-2"

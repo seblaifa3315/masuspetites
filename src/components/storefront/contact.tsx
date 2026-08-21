@@ -17,14 +17,14 @@ export default function Contact() {
   return (
     <section id="contact" className="scroll-mt-20 bg-surface py-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
-        <h2 className="font-heading text-3xl md:text-4xl font-bold text-center mb-12">
+        <h2 className="font-heading text-3xl md:text-4xl text-center mb-12">
           Get in Touch
         </h2>
         <div className="grid md:grid-cols-2 gap-12 max-w-4xl mx-auto">
           {/* Left — contact info */}
           <div className="space-y-6">
             <div>
-              <h3 className="font-heading text-lg font-semibold mb-2">Email</h3>
+              <h3 className="font-heading text-lg mb-2">Email</h3>
               <a
                 href="mailto:hello@masuspetites.com"
                 className="inline-flex items-center gap-2 text-muted hover:text-accent transition-colors"
@@ -34,7 +34,7 @@ export default function Contact() {
               </a>
             </div>
             <div>
-              <h3 className="font-heading text-lg font-semibold mb-3">Follow Us</h3>
+              <h3 className="font-heading text-lg mb-3">Follow Us</h3>
               <div className="flex items-center gap-4">
                 {socials.map((s) => (
                   <a

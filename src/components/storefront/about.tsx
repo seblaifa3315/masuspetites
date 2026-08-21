@@ -66,7 +66,7 @@ export default function About() {
 
         {/* Text + tattoo work carousel */}
         <div>
-          <h2 className="font-heading text-3xl md:text-4xl font-bold mb-6">
+          <h2 className="font-heading text-3xl md:text-4xl  mb-6">
             About the Artist
           </h2>
           <div className="space-y-4 text-muted leading-relaxed">
