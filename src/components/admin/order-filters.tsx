@@ -112,7 +112,7 @@ export function OrderFilters({
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search orders..."
-            className="w-full rounded-lg border border-border bg-surface py-2 pl-9 pr-8 text-sm text-foreground placeholder:text-muted focus:border-accent focus:outline-none"
+            className="w-full rounded-lg border border-border bg-surface py-2 pl-11 pr-8 text-sm text-foreground placeholder:text-muted focus:border-accent focus:outline-none"
           />
           {query && (
             <button

@@ -132,7 +132,7 @@ export default async function ClientsPage({
             name="q"
             defaultValue={searchQuery}
             placeholder="Search by name or email..."
-            className="w-full rounded-lg border border-border bg-surface py-2 pl-10 pr-4 text-sm text-foreground placeholder:text-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
+            className="w-full rounded-lg border border-border bg-surface py-2 pl-11 pr-4 text-sm text-foreground placeholder:text-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
           />
         </div>
       </form>

@@ -14,7 +14,7 @@ export default async function AdminDashboardLayout({
   return (
     <div className="flex min-h-screen">
       <Sidebar newOrderCount={newOrderCount} unreadMessageCount={unreadMessageCount} />
-      <main className="flex-1 p-8">{children}</main>
+      <main className="min-w-0 flex-1 overflow-hidden p-8">{children}</main>
     </div>
   );
 }
