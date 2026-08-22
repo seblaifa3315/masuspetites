@@ -1,8 +1,8 @@
 import type { OrderStatus } from "@/generated/prisma/client";
 
 const statusStyles: Record<OrderStatus, string> = {
-  PAID: "bg-yellow-500/10 text-yellow-400",
-  SHIPPED: "bg-blue-500/10 text-blue-400",
+  PAID: "bg-red-500/10 text-red-400",
+  SHIPPED: "bg-yellow-500/10 text-yellow-400",
   DELIVERED: "bg-green-500/10 text-green-400",
 };
 

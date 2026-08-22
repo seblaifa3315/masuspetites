@@ -8,6 +8,7 @@ const DATE_PRESETS = [
   { label: "Last 7 days", days: 7 },
   { label: "Last 30 days", days: 30 },
   { label: "This year", days: 0 },
+  { label: "All time", days: -1 },
 ] as const;
 
 function formatDate(date: Date) {
@@ -15,6 +16,9 @@ function formatDate(date: Date) {
 }
 
 function getPresetRange(preset: (typeof DATE_PRESETS)[number]) {
+  if (preset.days === -1) {
+    return { from: "", to: "" };
+  }
   const now = new Date();
   const to = formatDate(now);
   if (preset.days === 0) {
@@ -27,6 +31,9 @@ function getPresetRange(preset: (typeof DATE_PRESETS)[number]) {
 }
 
 function matchesPreset(from: string, to: string, preset: (typeof DATE_PRESETS)[number]) {
+  if (preset.days === -1) {
+    return !from && !to;
+  }
   const range = getPresetRange(preset);
   return from === range.from && to === range.to;
 }
@@ -135,8 +142,7 @@ export function OrderFilters({
       {/* Date range */}
       <div className="flex flex-wrap items-center gap-2">
         {DATE_PRESETS.map((preset) => {
-          const isActive =
-            dateFrom && dateTo && matchesPreset(dateFrom, dateTo, preset);
+          const isActive = matchesPreset(dateFrom, dateTo, preset);
           return (
             <button
               key={preset.label}

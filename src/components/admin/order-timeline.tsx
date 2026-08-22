@@ -26,8 +26,8 @@ interface OrderForTimeline {
 }
 
 const DOT_COLORS: Record<TimelineEvent["type"], string> = {
-  placed: "bg-yellow-500",
-  shipped: "bg-blue-500",
+  placed: "bg-red-500",
+  shipped: "bg-yellow-500",
   delivered: "bg-green-500",
   note: "bg-muted",
 };

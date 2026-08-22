@@ -30,7 +30,7 @@ export function Sidebar({ newOrderCount = 0, unreadMessageCount = 0 }: { newOrde
 
   return (
     <aside
-      className={`flex flex-col border-r border-border bg-surface transition-all duration-200 ${
+      className={`sticky top-0 flex h-screen flex-col border-r border-border bg-surface transition-all duration-200 ${
         collapsed ? "w-16" : "w-64"
       }`}
     >
