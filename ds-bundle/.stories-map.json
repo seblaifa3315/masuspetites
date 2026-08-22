@@ -1,0 +1,132 @@
+{
+  "global": "MasusPetites",
+  "pkg": "masus-petites-storefront",
+  "pkgDir": "/Users/sebastienlaifa/Desktop/tatoo_ecommerce",
+  "extraEntries": [],
+  "exported": [],
+  "storybookStatic": null,
+  "keyRecipe": 7,
+  "cfgSliceGlobal": "a139d95ad8ab0a8ba08b44a258c54602e36090304087f48fe923c61aa5a8ae08",
+  "components": [
+    {
+      "name": "About",
+      "group": "storefront",
+      "srcSha": null,
+      "sourceKey": "ed9b0723ab4e55b2",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "CartContent",
+      "group": "cart",
+      "srcSha": null,
+      "sourceKey": "e83aa9c47b2b709a",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "Contact",
+      "group": "storefront",
+      "srcSha": null,
+      "sourceKey": "991d6879230c40a2",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "Faq",
+      "group": "storefront",
+      "srcSha": null,
+      "sourceKey": "3320eea7b3263e72",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "Footer",
+      "group": "storefront",
+      "srcSha": null,
+      "sourceKey": "e5a8e2498eb9d3f5",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "Hero",
+      "group": "storefront",
+      "srcSha": null,
+      "sourceKey": "c115449182fe2118",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "InstagramIcon",
+      "group": "storefront",
+      "srcSha": null,
+      "sourceKey": "9944e6ebe8d7768b",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "Navbar",
+      "group": "storefront",
+      "srcSha": null,
+      "sourceKey": "9bdb819438e06e43",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "ProductCard",
+      "group": "storefront",
+      "srcSha": null,
+      "sourceKey": "751dcd097bf45837",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "ProductDetail",
+      "group": "storefront",
+      "srcSha": null,
+      "sourceKey": "860fd2e4570caa65",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "ProductGrid",
+      "group": "storefront",
+      "srcSha": null,
+      "sourceKey": "6a02d18f552397ad",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "SuccessContent",
+      "group": "cart",
+      "srcSha": null,
+      "sourceKey": "2695eb5036cb98c8",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "TattooCarousel",
+      "group": "storefront",
+      "srcSha": null,
+      "sourceKey": "c8d1f932717bf55a",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "TikTokIcon",
+      "group": "storefront",
+      "srcSha": null,
+      "sourceKey": "8f1ac51eb09f0e3e",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "XIcon",
+      "group": "storefront",
+      "srcSha": null,
+      "sourceKey": "bb8557ae53a93906",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    }
+  ]
+}

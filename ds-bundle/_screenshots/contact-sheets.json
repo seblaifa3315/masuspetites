@@ -1,0 +1,22 @@
+[
+  {
+    "sheet": 1,
+    "components": [
+      "About",
+      "CartContent",
+      "Contact",
+      "Faq",
+      "Footer",
+      "Hero",
+      "InstagramIcon",
+      "Navbar",
+      "ProductCard",
+      "ProductDetail",
+      "ProductGrid",
+      "SuccessContent",
+      "TattooCarousel",
+      "TikTokIcon",
+      "XIcon"
+    ]
+  }
+]

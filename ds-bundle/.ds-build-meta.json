@@ -1,0 +1,9 @@
+{
+  "namespace": "MasusPetites",
+  "source": "masus-petites-storefront@0.1.0",
+  "shape": "package",
+  "provider": null,
+  "componentCount": 15,
+  "skippedStoryIds": [],
+  "runtimeFontPrefixes": []
+}
