@@ -15,7 +15,6 @@ export default function SettingsPage() {
     changeEmail,
     null,
   );
-
   const [showCurrent, setShowCurrent] = useState(false);
   const [showNew, setShowNew] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
@@ -212,6 +211,7 @@ export default function SettingsPage() {
             </button>
           </form>
         </div>
+
       </div>
     </div>
   );

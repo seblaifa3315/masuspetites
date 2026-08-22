@@ -1,6 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
+import { prisma } from "@/lib/prisma";
 
 type ActionState = { error: string } | { success: string } | null;
 
@@ -99,4 +100,79 @@ export async function changeEmail(
   }
 
   return { success: "Confirmation email sent to your new address." };
+}
+
+export async function getFinancesSettingsAction() {
+  const settings = await prisma.adminSettings.findUnique({
+    where: { id: "default" },
+  });
+  return (
+    settings ?? {
+      stripeFeePercent: 2.9,
+      stripeFeeFixed: 30,
+      shippingFlatCost: 550,
+      taxRatePercent: 25.0,
+    }
+  );
+}
+
+export async function updateFinancesSettings(
+  _prevState: ActionState,
+  formData: FormData,
+): Promise<ActionState> {
+  const stripeFeePercent = parseFloat(
+    formData.get("stripeFeePercent") as string,
+  );
+  const stripeFeeFixed = parseInt(formData.get("stripeFeeFixed") as string, 10);
+  const shippingFlatCost = parseInt(
+    formData.get("shippingFlatCost") as string,
+    10,
+  );
+  const taxRatePercent = parseFloat(
+    formData.get("taxRatePercent") as string,
+  );
+
+  if (
+    isNaN(stripeFeePercent) ||
+    isNaN(stripeFeeFixed) ||
+    isNaN(shippingFlatCost) ||
+    isNaN(taxRatePercent)
+  ) {
+    return { error: "All fields must be valid numbers." };
+  }
+
+  if (stripeFeePercent < 0 || stripeFeePercent > 100) {
+    return { error: "Stripe fee percentage must be between 0 and 100." };
+  }
+
+  if (stripeFeeFixed < 0) {
+    return { error: "Stripe fixed fee cannot be negative." };
+  }
+
+  if (shippingFlatCost < 0) {
+    return { error: "Shipping cost cannot be negative." };
+  }
+
+  if (taxRatePercent < 0 || taxRatePercent > 100) {
+    return { error: "Tax rate must be between 0 and 100." };
+  }
+
+  await prisma.adminSettings.upsert({
+    where: { id: "default" },
+    update: {
+      stripeFeePercent,
+      stripeFeeFixed,
+      shippingFlatCost,
+      taxRatePercent,
+    },
+    create: {
+      id: "default",
+      stripeFeePercent,
+      stripeFeeFixed,
+      shippingFlatCost,
+      taxRatePercent,
+    },
+  });
+
+  return { success: "Finances settings updated." };
 }

@@ -306,7 +306,22 @@ async function main() {
 
   console.log(`Created ${MESSAGE_COUNT} contact messages.\n`);
 
-  // 5. Summary
+  // 5. Seed default admin settings
+  console.log("Upserting default admin settings...");
+  await prisma.adminSettings.upsert({
+    where: { id: "default" },
+    update: {},
+    create: {
+      id: "default",
+      stripeFeePercent: 2.9,
+      stripeFeeFixed: 30,
+      shippingFlatCost: 550,
+      taxRatePercent: 25.0,
+    },
+  });
+  console.log("Done.\n");
+
+  // 6. Summary
   const [orderCount, itemCount, noteCount, msgCount] = await Promise.all([
     prisma.order.count(),
     prisma.orderItem.count(),

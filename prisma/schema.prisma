@@ -103,3 +103,13 @@ model ContactMessage {
 
   @@map("contact_messages")
 }
+
+model AdminSettings {
+  id               String @id @default("default")
+  stripeFeePercent Float  @default(2.9)
+  stripeFeeFixed   Int    @default(30)     // cents per transaction
+  shippingFlatCost Int    @default(550)    // cents per order
+  taxRatePercent   Float  @default(25.0)   // estimated tax rate on net profit
+
+  @@map("admin_settings")
+}
