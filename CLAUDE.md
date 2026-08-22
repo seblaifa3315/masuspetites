@@ -33,6 +33,7 @@ src/
 │   │   │   │   ├── new/          # New product page
 │   │   │   │   └── [id]/edit/    # Edit product page
 │   │   │   ├── orders/     # Orders management
+│   │   │   ├── finances/   # Finances page (revenue/fees/margins breakdown)
 │   │   │   └── messages/   # Messages management (contact form inbox)
 │   │   │       └── actions.ts    # Server actions: read, delete, star, bulk ops, markAllRead
 │   │   ├── login/          # Admin login (split-screen with image)
@@ -61,12 +62,15 @@ src/
 │       ├── product-actions.tsx# Row actions (edit, delete, active toggle)
 │       ├── message-actions.tsx  # MessageRow: expand, read/unread, star, delete, checkbox
 │       ├── messages-table.tsx   # Client wrapper: bulk selection, action bar, empty state
-│       └── mark-all-read-button.tsx # Mark all messages as read button
+│       ├── mark-all-read-button.tsx # Mark all messages as read button
+│       ├── finances-breakdown.tsx   # Finances chart (monthly/yearly toggle)
+│       └── finances-settings-form.tsx # Configurable rate settings form
 ├── lib/
 │   ├── prisma.ts           # Prisma client singleton (PrismaPg adapter)
 │   ├── supabase/           # Supabase clients (browser, server, admin)
 │   ├── stripe.ts           # Stripe client
 │   ├── resend.ts           # Resend client
+│   ├── finances-queries.ts # Finances query helpers (summary, monthly, yearly breakdowns)
 │   └── store/cart.ts       # Zustand cart store (persist middleware, localStorage)
 ├── types/                  # Shared TypeScript types
 └── generated/              # Prisma generated types
@@ -106,6 +110,16 @@ src/
 - MessagesTable (client component) manages bulk selection state; MessageRow handles individual row interactions
 - Expand/collapse uses CSS grid `gridTemplateRows: 0fr/1fr` transition (always-rendered hidden row)
 - Dates serialized to ISO strings before passing from server page to client components
+
+## Finances
+- `AdminSettings` model stores configurable rates: `stripeFeePercent`, `stripeFeeFixed` (cents), `shippingFlatCost` (cents), `taxRatePercent`
+- Default row with `id: "default"` seeded via `prisma/seed.ts`; settings form uses `upsert` so the row is always present
+- Finances page (`/admin/finances`) is a server component with date filtering via `searchParams`
+- Summary cards: Gross Revenue, Stripe Fees, Shipping, Net Before Tax, Est. Tax, Est. Take-Home (all in cents, formatted to dollars)
+- Stripe fee per order = `totalCents * stripeFeePercent / 100 + stripeFeeFixed` (only on successful transactions)
+- Breakdown chart (`finances-breakdown.tsx`) has Monthly/Yearly toggle, uses Recharts grouped bar chart with `useThemeColors()` hook
+- Rate settings form (`finances-settings-form.tsx`) is embedded at the bottom of the finances page (not in the settings page)
+- Settings are loaded client-side via `getFinancesSettingsAction` server action, saved via `updateFinancesSettings`
 
 ## Auth Flow
 - Admin login at `/admin/login`
