@@ -45,7 +45,7 @@ export default async function ProductPage({ params }: PageProps) {
   return (
     <>
       <Navbar />
-      <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="flex-1 min-w-0 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Back link */}
         <Link
           href="/#collection"
@@ -65,25 +65,26 @@ export default async function ProductPage({ params }: PageProps) {
               You Might Also Like
             </h2>
             <div
+              className="min-w-0"
               style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(4, 11rem)",
+                display: "flex",
                 gap: "1rem",
                 overflowX: "auto",
                 paddingBottom: "1rem",
               }}
             >
               {suggested.map((p) => (
-                <ProductCard
-                  key={p.id}
-                  id={p.id}
-                  name={p.name}
-                  slug={p.slug}
-                  imageUrl={p.imageUrl}
-                  priceCents={p.variants[0]?.priceCents ?? 0}
-                  variantId={p.variants[0]?.id ?? ""}
-                  aspectRatio="3/4"
-                />
+                <div key={p.id} className="w-32 sm:w-40 md:w-44 flex-shrink-0">
+                  <ProductCard
+                    id={p.id}
+                    name={p.name}
+                    slug={p.slug}
+                    imageUrl={p.imageUrl}
+                    priceCents={p.variants[0]?.priceCents ?? 0}
+                    variantId={p.variants[0]?.id ?? ""}
+                    aspectRatio="3/4"
+                  />
+                </div>
               ))}
             </div>
           </section>

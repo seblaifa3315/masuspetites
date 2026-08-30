@@ -17,7 +17,7 @@ export default async function HomePage() {
   return (
     <>
       <Navbar />
-      <main className="flex-1">
+      <main className="flex-1 min-w-0">
         <Hero />
         <ProductGrid products={products} />
         <About />

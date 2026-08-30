@@ -12,7 +12,7 @@ export default function CartPage() {
   return (
     <>
       <Navbar />
-      <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="flex-1 min-w-0 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Link
           href="/#collection"
           className="inline-flex items-center gap-1.5 text-sm text-muted hover:text-foreground transition-colors mb-8"
