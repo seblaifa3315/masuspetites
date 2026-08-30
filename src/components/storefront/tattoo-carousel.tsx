@@ -31,6 +31,7 @@ export default function TattooCarousel({ images }: TattooCarouselProps) {
 
   return (
     <div
+      className="min-w-0"
       style={{
         display: "flex",
         alignItems: "center",
@@ -50,18 +51,18 @@ export default function TattooCarousel({ images }: TattooCarouselProps) {
       )}
 
       <div
+        className="min-w-0"
         style={{
           display: "flex",
           gap: "0.75rem",
-          overflow: "hidden",
+          overflow: "auto",
         }}
       >
         {visibleImages.map((src, i) => (
           <div
             key={`${src}-${i}`}
+            className="w-16 h-16 sm:w-28 sm:h-28 md:w-40 md:h-40"
             style={{
-              width: "10rem",
-              height: "10rem",
               borderRadius: "0.75rem",
               overflow: "hidden",
               flexShrink: 0,

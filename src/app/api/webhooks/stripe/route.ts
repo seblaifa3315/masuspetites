@@ -55,13 +55,14 @@ export async function POST(req: NextRequest) {
     );
 
     // Generate sequential order number starting at 1001
-    const lastOrder = await prisma.order.findFirst({
-      orderBy: { createdAt: "desc" },
+    const existingOrders = await prisma.order.findMany({
+      where: { orderNumber: { startsWith: "MP-" } },
       select: { orderNumber: true },
     });
-    const lastNumber = lastOrder
-      ? parseInt(lastOrder.orderNumber.replace("MP-", ""), 10)
-      : 1000;
+    const lastNumber = existingOrders.reduce((max, o) => {
+      const n = parseInt(o.orderNumber.slice(3), 10);
+      return Number.isNaN(n) ? max : Math.max(max, n);
+    }, 1000);
     const orderNumber = `MP-${lastNumber + 1}`;
 
     // Create order in database

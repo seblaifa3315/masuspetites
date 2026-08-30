@@ -164,7 +164,7 @@ async function main() {
   console.log(`Creating ${ORDER_COUNT} orders with items (2024–2026)...`);
 
   for (let i = 0; i < ORDER_COUNT; i++) {
-    const orderNumber = `ORD-${1001 + i}`;
+    const orderNumber = `MP-${1001 + i}`;
     const firstName = pick(firstNames);
     const lastName = pick(lastNames);
     const customerName = `${firstName} ${lastName}`;

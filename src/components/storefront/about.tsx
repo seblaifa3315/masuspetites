@@ -65,7 +65,7 @@ export default function About() {
         </div>
 
         {/* Text + tattoo work carousel */}
-        <div>
+        <div className="min-w-0">
           <h2 className="font-heading text-3xl md:text-4xl  mb-6">
             About the Artist
           </h2>
