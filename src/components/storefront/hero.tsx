@@ -1,17 +1,77 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
+const PARALLAX_FACTOR = 0.6;
+
 export default function Hero() {
+  const contentRef = useRef<HTMLDivElement>(null);
+  const bgRef = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = contentRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.2 }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    let ticking = false;
+    function updateParallax() {
+      const el = bgRef.current;
+      if (el) {
+        el.style.transform = `translate3d(0, ${window.scrollY * PARALLAX_FACTOR}px, 0)`;
+      }
+      ticking = false;
+    }
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(updateParallax);
+    }
+
+    updateParallax();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
     <section className="relative h-[80vh] min-h-150 flex items-center justify-center overflow-hidden bg-linear-to-br from-background via-surface to-background">
-      <Image
-        src="/hero.png"
-        alt="Tattoo art prints"
-        fill
-        priority
-        className="object-cover"
-      />
+      <div
+        ref={bgRef}
+        className="absolute inset-x-0 will-change-transform"
+        style={{ top: "-80%", height: "260%" }}
+      >
+        <Image
+          src="/hero.png"
+          alt="Tattoo art prints"
+          fill
+          priority
+          className="object-cover"
+        />
+      </div>
       <div className="absolute inset-0 bg-black/75" />
-      <div className="relative z-10 text-center px-4 max-w-3xl mx-auto">
+      <div
+        ref={contentRef}
+        className={`relative z-10 text-center px-4 max-w-3xl mx-auto transition-all duration-1000 ease-out motion-reduce:transition-none ${
+          visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+        }`}
+      >
         <h1
           className="font-heading text-5xl md:text-7xl font-thin tracking-tight mb-6"
           style={{ animation: "breathe 5s ease-in-out infinite, flicker 3s step-end infinite" }}
