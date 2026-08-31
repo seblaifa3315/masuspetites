@@ -256,8 +256,8 @@ export function OrdersLineChart({
 // --- Order Status Donut ---
 
 const STATUS_COLORS: Record<string, string> = {
-  PAID: "#EAB308",
-  SHIPPED: "#3B82F6",
+  PAID: "#EF4444",
+  SHIPPED: "#EAB308",
   DELIVERED: "#22C55E",
 };
 
