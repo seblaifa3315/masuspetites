@@ -145,13 +145,24 @@ async function main() {
 
   console.log(`Found ${variants.length} product variant(s) to reference.\n`);
 
-  // 2. Clear seeded tables (respecting FK order)
-  console.log("Clearing existing orders, notes, items, and messages...");
-  await prisma.orderNote.deleteMany();
-  await prisma.orderItem.deleteMany();
-  await prisma.order.deleteMany();
-  await prisma.contactMessage.deleteMany();
+  // 2. Clear previously seeded (fake) orders only — real orders have a
+  // stripeSessionId set by the Stripe webhook and must never be wiped here.
+  console.log("Clearing previously seeded orders, notes, and items...");
+  await prisma.orderNote.deleteMany({ where: { order: { stripeSessionId: null } } });
+  await prisma.orderItem.deleteMany({ where: { order: { stripeSessionId: null } } });
+  await prisma.order.deleteMany({ where: { stripeSessionId: null } });
+  // Seeded contact messages always use a fake @email.com address; real
+  // submissions never do, so this can't touch real contact form entries.
+  await prisma.contactMessage.deleteMany({ where: { email: { endsWith: "@email.com" } } });
   console.log("Done.\n");
+
+  // Seeded order numbers continue after the highest existing order number
+  // (real or seeded) so they never collide with real orders.
+  const existingOrders = await prisma.order.findMany({ select: { orderNumber: true } });
+  const startingNumber = existingOrders.reduce((max, o) => {
+    const n = parseInt(o.orderNumber.replace(/^\D+-/, ""), 10);
+    return Number.isNaN(n) ? max : Math.max(max, n);
+  }, 1000);
 
   // 3. Seed orders — spread across 2024, 2025, and 2026
   // 20 in 2024, 40 in 2025, 30 in 2026
@@ -164,7 +175,7 @@ async function main() {
   console.log(`Creating ${ORDER_COUNT} orders with items (2024–2026)...`);
 
   for (let i = 0; i < ORDER_COUNT; i++) {
-    const orderNumber = `MP-${1001 + i}`;
+    const orderNumber = `MP-${startingNumber + 1 + i}`;
     const firstName = pick(firstNames);
     const lastName = pick(lastNames);
     const customerName = `${firstName} ${lastName}`;
