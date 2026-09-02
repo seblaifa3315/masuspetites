@@ -213,7 +213,7 @@ export default function CartContent() {
           </div>
 
           <p className="text-xs text-muted mb-6">
-            Shipping &amp; taxes calculated at checkout
+            Free shipping · No taxes added
           </p>
 
           <button

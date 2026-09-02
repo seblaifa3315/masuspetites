@@ -127,6 +127,7 @@ export default function ProductDetail({ product }: ProductDetailProps) {
         <div>
           <h1 className="font-heading text-3xl lg:text-4xl font-bold">{product.name}</h1>
           <p className="mt-2 text-2xl text-accent font-semibold">${price}</p>
+          <p className="mt-1 text-xs text-muted">Free shipping · No taxes added</p>
         </div>
 
         {product.description && (
