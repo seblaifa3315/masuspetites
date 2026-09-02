@@ -93,14 +93,36 @@ src/
 
 ## Storefront
 - Homepage sections: Navbar > Hero > Product Grid > About > FAQ > Contact > Footer
-- Product grid uses CSS columns masonry layout (`columns-[220px]`) with varying aspect ratios
+- Product grid uses CSS columns masonry layout (`columns-[220px]`) with varying aspect ratios; heading is followed by a short paragraph describing printing/paper quality
 - Product cards feature tilt/glare effect on hover + dark gradient overlay with slide-up cart button
 - Hero title has breathe + flicker animations (defined in `globals.css` `@layer base`)
 - Hero CTA button glows on hover (`.hero-glow-btn` class in `globals.css`)
+- Hero content (headline/CTA) fades in + slides up once on scroll into view, via `IntersectionObserver` (threshold 0.2, disconnects after first trigger); respects `motion-reduce`
+- Hero background has a scroll-linked parallax effect: a `scroll` listener (rAF-throttled) translates the oversized background wrapper at `PARALLAX_FACTOR` (currently 0.6) of `window.scrollY`; the wrapper is intentionally oversized (`height`/`top` in `hero.tsx`) so the buffer never runs out before the section scrolls out of view — if `PARALLAX_FACTOR` changes, the buffer size must scale with it or a gap will show at the edges. Skipped under `prefers-reduced-motion: reduce`. This is also why the hero background looks more cropped/zoomed on narrow (mobile/portrait) viewports — expected, not a bug
 - Navbar smooth-scrolls to sections; logo scrolls to top
 - Cart store uses Zustand `persist` middleware; hydration handled with `mounted` state check
 - Contact form uses `useActionState` with server action writing to `ContactMessage` table
 - Custom SVG icons for Instagram, TikTok, X in `components/storefront/icons.tsx`
+- No shipping cost or tax is added at Stripe Checkout (shipping is baked into the listed price); cart and product-detail pages say "Free shipping · No taxes added" — keep this in sync if that ever changes in `cart/actions.ts`
+
+## Mobile layout pitfall
+- `<body>` is `flex flex-col` (`app/layout.tsx`), so every page's `<main>` is a flex item. A flex item's default `min-width: auto` lets wide content (fixed-width rows, horizontal-scroll lists) force `<main>` — and the whole page — wider than the viewport on mobile, even with `overflow-x: auto` on the inner element itself
+- Every `<main>` must carry both `min-w-0` and `w-full` alongside `max-w-7xl mx-auto` (see `app/page.tsx`, `app/cart/page.tsx`, `app/product/[slug]/page.tsx`, `app/checkout/success/page.tsx`) — `w-full` is required because `mx-auto` auto-margins on a flex item disable `align-items: stretch` and fall back to shrink-to-fit sizing, which `min-w-0` alone does not fix
+- Any new fixed-width row of cards/images (e.g. a "You might also like" strip) needs responsive per-breakpoint sizing, not just a fixed rem value, or this bug reappears
+
+## Orders & Checkout
+- Order numbers use the `MP-{n}` format (e.g. `MP-1001`), starting at 1001
+- Orders are **only** ever created by the Stripe webhook (`api/webhooks/stripe/route.ts`), never by the checkout server action (`cart/actions.ts`) — that action just creates the Stripe Checkout Session and redirects; the order + `OrderItem` rows and both confirmation emails (buyer + seller via `CONTACT_NOTIFICATION_EMAIL`) are created/sent from the webhook handler after Stripe reports `checkout.session.completed`
+- Every real order has a `stripeSessionId` and `stripePaymentIntent` set; this is the reliable way to distinguish real orders from seeded/fake ones (fake orders have `stripeSessionId: null`)
+- The webhook generates the next order number by scanning existing `MP-` orders for the current max — not by counting rows — to stay correct even if orders are deleted
+- `checkout/success/page.tsx` reads `?session_id=` (from Stripe's `success_url` template) and looks up the order to display its order number. Because the webhook runs asynchronously and can land after the redirect, the page retries the DB lookup up to 5× with 750ms delays (~3.75s total) before falling back to showing no order number — this is a real race condition, not a rare edge case, so don't remove the retry when touching this page
+
+## Seed Script Safety
+- `prisma/seed.ts` is safe to re-run against a database that also has real data — it must stay that way:
+  - Deletes only orders/`OrderItem`/`OrderNote` where `stripeSessionId: null` (i.e. previously seeded, never real orders)
+  - Deletes only `ContactMessage` rows whose email ends in `@email.com` (the fake domain the seed script itself always generates)
+  - New seeded order numbers continue after the current max `MP-` number in the DB (real or seeded) rather than resetting to `MP-1001`, so reseeding can never collide with a real order number
+- If you add new fake data types to the seed script, follow the same pattern: give seeded rows an unambiguous marker (a null FK, a reserved value/domain) and filter deletes by it — never an unconditional `deleteMany()` on a table that can also hold real data
 
 ## Messages
 - ContactMessage model has `isRead` and `isStarred` boolean fields
@@ -120,6 +142,7 @@ src/
 - Breakdown chart (`finances-breakdown.tsx`) has Monthly/Yearly toggle, uses Recharts grouped bar chart with `useThemeColors()` hook
 - Rate settings form (`finances-settings-form.tsx`) is embedded at the bottom of the finances page (not in the settings page)
 - Settings are loaded client-side via `getFinancesSettingsAction` server action, saved via `updateFinancesSettings`
+- Dashboard's Order Status donut (`components/admin/dashboard/charts.tsx`, `STATUS_COLORS`) colors: PAID red (`#EF4444`), SHIPPED yellow (`#EAB308`), DELIVERED green (`#22C55E`)
 
 ## Auth Flow
 - Admin login at `/admin/login`
